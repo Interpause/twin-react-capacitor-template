@@ -1,0 +1,21 @@
+{
+  "name": "twin-react-capacitor-template",
+  "version": "1.0.0",
+  "description": "template for capacitor app using react framework with twin.macro and typescript",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "capacitor",
+    "twin.macro",
+    "react",
+    "typescript",
+    "webpack",
+    "react-refresh"
+  ],
+  "author": "John-Henry Lim <hyphen@interpause.dev> (https://interpause.dev/)",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "npm-run-all": "^4.1.5"
+  }
+}
