@@ -68,5 +68,25 @@ export default function App() {
 
 I also added `.prettierrc` according to my own personal preferences, which should be picked up by most editors (for example, vscode has a prettier plugin).
 
+## VSCode setup (optional)
+
+Paste this in `.vscode/settings.json` to enable auto-formatting according to `.prettierrc` and auto-detection of typescript used:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.tsdk": "common\\node_modules\\typescript\\lib"
 }
 ```
