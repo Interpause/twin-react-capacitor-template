@@ -1,6 +1,8 @@
 const webpack = require('webpack')
 const path = require('path')
 
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const ReactRefreshTypeScript = require('react-refresh-typescript')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { WebpackPluginServe } = require('webpack-plugin-serve')
 
@@ -31,6 +33,9 @@ const config = {
 					{
 						loader: 'ts-loader',
 						options: {
+							getCustomTransformers: () => ({
+								before: isDev ? [ReactRefreshTypeScript()] : [],
+							}),
 							transpileOnly: !isDev,
 							onlyCompileBundledFiles: true,
 							experimentalFileCaching: true,
@@ -47,6 +52,7 @@ const config = {
 		new HtmlWebpackPlugin({
 			title: 'twin-react-capacitor-template',
 		}),
+		isDev && new ReactRefreshWebpackPlugin(),
 		isDev &&
 			new WebpackPluginServe({
 				host: 'localhost',

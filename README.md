@@ -251,3 +251,41 @@ yarn dev # or npm run dev
 ```
 
 Congrats! You have just built the app and run it.
+
+## Setup React Fast Refresh
+
+First, install:
+
+```sh
+yarn add --dev @pmmmwh/react-refresh-webpack-plugin react-refresh react-refresh-typescript
+```
+
+Then, modify `webpack.config.js`:
+
+```js
+// add these imports
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const ReactRefreshTypeScript = require('react-refresh-typescript')
+```
+
+```js
+{
+  loader: 'ts-loader',
+  options: {
+    // add getCustomTransformers
+    getCustomTransformers: () => ({
+      before: isDev ? [ReactRefreshTypeScript()] : [],
+    }),
+    // ...
+  },
+}
+```
+
+```js
+plugins: [
+  // ...
+  isDev && new ReactRefreshWebpackPlugin(), // add the plugin
+]
+```
+
+Now, when making edits, instead of the entire page reloading, only the modified component will reload while still preserving its own state.
