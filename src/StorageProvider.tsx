@@ -1,4 +1,4 @@
-// working around @capacitor/storage to make it more React-friendly
+// working around @capacitor/storage to make it more React-friendly. I should publish this as gist or smth
 import { Storage } from '@capacitor/storage'
 import {
 	createContext,
@@ -8,29 +8,25 @@ import {
 	useCallback,
 } from 'react'
 
-type KeyValueStorage = {
-	[key: string]: any
-}
-
-const initialStorage: KeyValueStorage = {}
+const initialStorage: Record<string, any> = {}
 
 const StorageContext = createContext({
 	state: initialStorage,
-	setState: (newState: KeyValueStorage) =>
+	setState: (newState: Record<string, any>) =>
 		console.error('StorageProvider needed!'),
 })
 
 /** Run this before App is rendered */
 export async function initStorage() {
 	const { value } = await Storage.get({ key: 'storage' })
-	const storage: KeyValueStorage =
+	const storage: Record<string, any> =
 		value === null ? initialStorage : JSON.parse(value)
 	;(globalThis as any).__INIT_STORAGE_TEMPORARY_IGNORE_THIS__ = storage
 }
 
 /** Wrap App with this Provider */
 export function StorageProvider({ children }: { children: ReactNode }) {
-	const [state, setState] = useState<KeyValueStorage>(
+	const [state, setState] = useState<Record<string, any>>(
 		(globalThis as any).__INIT_STORAGE_TEMPORARY_IGNORE_THIS__,
 	)
 	return (
