@@ -66,7 +66,7 @@ document.body.append(container)
 render(e(App), container)
 ```
 
-```ts
+```tsx
 // App.tsx
 import React from 'react'
 
@@ -315,3 +315,109 @@ const presets = [
 ```
 
 `preset-env` will use the `browserslist` key in `package.json` to determine what it needs to polyfill, adding in polyfills from `core-js` as needed.
+
+## Setup twin.macro
+
+```sh
+yarn add twin.macro @emotion/react @emotion/styled
+```
+
+Modify `index.ts`:
+
+```ts
+import { GlobalStyles } from 'twin.macro'
+
+// ...
+render([e(GlobalStyles), e(App)], container)
+```
+
+Now, add a bunch more plugins to Babel:
+
+```sh
+yarn add -D babel-plugin-macros @emotion/babel-plugin-jsx-pragmatic @emotion/babel-plugin
+```
+
+```js
+// .babelrc.js
+const plugins = [
+  '@emotion/babel-plugin',
+  'babel-plugin-macros',
+  [
+    '@emotion/babel-plugin-jsx-pragmatic',
+    {
+      export: 'jsx',
+      import: '__cssprop',
+      module: '@emotion/react',
+    },
+  ],
+  [
+    '@babel/plugin-transform-react-jsx',
+    {
+      pragma: '__cssprop',
+      pragmaFrag: 'React.Fragment',
+    },
+  ],
+]
+```
+
+Finally, typings to get everything working with Typescript. Create `src/twin.d.ts`:
+
+```ts
+// https://github.com/ben-rogerson/twin.examples
+import 'twin.macro'
+import styledImport from '@emotion/styled'
+import { css as cssImport } from '@emotion/react'
+
+declare module 'twin.macro' {
+  // The styled and css imports
+  const styled: typeof styledImport
+  const css: typeof cssImport
+}
+
+// fixes I searched quite hard for to retype the added props
+
+// The css prop
+import {} from '@emotion/react/types/css-prop'
+
+// The 'as' prop on styled components
+declare global {
+  namespace JSX {
+    interface IntrinsicAttributes<T> extends DOMAttributes<T> {
+      as?: keyof HTMLElementTagNameMap
+    }
+  }
+}
+```
+
+Now you can start playing with `twin.macro` magic! see `Card.tsx` for example.
+
+```tsx
+// ...
+export interface CardProps {
+  variant?: 'outline' | 'filled'
+}
+
+/** Card component that is a styled div. Accepts CardProps. */
+export const Card = styled.div`
+  ${tw`relative inline-flex flex-col justify-between text-left rounded overflow-x-hidden bg-opacity-10`}
+  min-height: 30ch;
+  width: 50ch;
+
+  ${({ variant = 'outline' }: CardProps) =>
+    ({
+      outline: tw`bg-opacity-0 border-2`,
+      filled: tw`shadow-md`,
+    }[variant])}
+`
+
+/** Styled div that should be wrapped in Card. */
+export const CardHeader = tw.div`order-1 p-1`
+/** Styled div that should be wrapped in Card. */
+export const CardBody = tw.div`order-2 flex-grow my-1 px-1 overflow-x-hidden overflow-y-auto`
+/** Styled div that should be wrapped in Card. */
+export const CardFooter = tw.div`order-3 p-1`
+```
+
+## VSCode twin.macro Intellisense Extension (optional)
+
+Gives much needed intellisense for `twin.macro`: <https://marketplace.visualstudio.com/items?itemName=lightyen.tailwindcss-intellisense-twin>
