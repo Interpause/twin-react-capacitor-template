@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import tw, { css } from 'twin.macro'
 import { SimpleCard } from './Card'
 import { Device, DeviceInfo } from '@capacitor/device'
+import { useStorage } from './Storage'
 
 export default function App() {
-	const [info, setInfo] = useState<DeviceInfo>()
+	const [info, setInfo] = useStorage<DeviceInfo>('cachedInfo')
 
 	useEffect(() => {
+		if (info) return console.log('Already Cached!')
 		Device.getInfo().then(setInfo)
+		console.log('Caching...')
 	}, [])
 	return (
 		<div tw='relative w-screen h-screen overflow-hidden py-20 text-center bg-gray-50'>

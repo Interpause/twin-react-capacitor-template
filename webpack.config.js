@@ -11,7 +11,9 @@ const outPath = path.resolve(__dirname, 'dist')
 
 const config = {
 	mode: isDev ? 'development' : 'production',
-	entry: [isDev && 'webpack-plugin-serve/client', './index.ts'].filter(Boolean),
+	entry: [isDev && 'webpack-plugin-serve/client', './index.tsx'].filter(
+		Boolean,
+	),
 	output: {
 		path: outPath,
 		filename: '[name].bundle.js',

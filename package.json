@@ -2,7 +2,7 @@
   "name": "twin-react-capacitor-template",
   "version": "1.0.0",
   "description": "template for capacitor app using react framework with twin.macro and typescript",
-  "main": "index.ts",
+  "main": "index.tsx",
   "scripts": {
     "dev": "cross-env NODE_ENV=development wp",
     "prod": "cross-env NODE_ENV=production wp",
@@ -47,6 +47,8 @@
     "@capacitor/android": "^3.2.0",
     "@capacitor/core": "^3.2.0",
     "@capacitor/device": "^1.0.2",
+    "@capacitor/splash-screen": "^1.1.1",
+    "@capacitor/storage": "^1.0.3",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "core-js": "^3.16.2",

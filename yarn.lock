@@ -925,6 +925,16 @@
   resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-1.0.2.tgz#bcaa8e6fbd06f96ec51670bf157bd107151b3fed"
   integrity sha512-742Mq/zAjqUcOd9khhP0m/HXsZmWlymJdt09G/gEQkK3s8737Oey4xZwCnjtdjwt3ztEqcP4X8+yR01O80TDsA==
 
+"@capacitor/splash-screen@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/splash-screen/-/splash-screen-1.1.1.tgz#315eee45913386675d0fae98dfce5e82ab81f688"
+  integrity sha512-gOAwW0COijsFcpWko3z0TV06v9UvLzG2XYGBNRojKVouKQCD9uYtrSZFVUG7mcbsni7k8P8sZAeF+3y6FxOdew==
+
+"@capacitor/storage@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@capacitor/storage/-/storage-1.0.3.tgz#7c69a32001358de9ce95f844a96438e6cd9656a9"
+  integrity sha512-tY1Rb5qVbiCPm1G983jkgvqU28oVe2/BByVC29AJ8efZ4V46NqfXcmj12Ve1KiAo/XIwtp8li/GXcdCT1QnyQg==
+
 "@emotion/babel-plugin-jsx-pragmatic@^0.1.5":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin-jsx-pragmatic/-/babel-plugin-jsx-pragmatic-0.1.5.tgz#27debfe9c27c4d83574d509787ae553bf8a34d7e"
