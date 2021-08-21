@@ -8,6 +8,24 @@ While it isn't as performant as say, React Native or Flutter, packaging web apps
 
 Either directly clone this template to use it, or follow along in the commit history to learn how I set this up.
 
+When customizing the template for your own use, besides changing `package.json`, remember to change `appId` and `appName` in `capacitor.config.ts`.
+
+## Table of Contents
+
+* [Initialize App](#initialize-app)
+* [Install Typescript](#install-typescript)
+* [Install React](#install-react)
+* [VSCode Setup (optional)](#vscode-setup--optional-)
+* [Install Webpack](#install-webpack)
+* [Setup Babel](#setup-babel)
+* [Setup Webpack](#setup-webpack)
+* [Setup React Fast Refresh](#setup-react-fast-refresh)
+* [Setup Babel polyfills using core-js](#setup-babel-polyfills-using-core-js)
+* [Setup twin.macro](#setup-twinmacro)
+* [VSCode twin.macro Intellisense Extension (optional)](#vscode-twinmacro-intellisense-extension--optional-)
+* [Package with Capacitor](#package-with-capacitor)
+* [Last Notes](#last-notes)
+
 ## Initialize App
 
 ```sh
@@ -465,4 +483,4 @@ Capacitor's APIs are modular and have to be individually installed to be used, s
 
 ## Last Notes
 
-- When customizing the template for your own use, besides changing `package.json`, remember to change `appId` and `appName` in `capacitor.config.ts`.
+* When customizing the template for your own use, besides changing `package.json`, remember to change `appId` and `appName` in `capacitor.config.ts`.
