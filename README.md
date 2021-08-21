@@ -6,6 +6,8 @@ Code isn't just about language performance, it is also about letting the develop
 
 While it isn't as performant as say, React Native or Flutter, packaging web apps like this comes with the obvious advantages of much smaller app size, getting to use a wider range of packages, while still maintaining access to native APIs as plugins. In this case, I have chosen to use Capacitor as the successor to Cordova.
 
+Either directly clone this template to use it, or follow along in the commit history to learn how I set this up.
+
 ## Initialize App
 
 ```sh
@@ -289,3 +291,27 @@ plugins: [
 ```
 
 Now, when making edits, instead of the entire page reloading, only the modified component will reload while still preserving its own state.
+
+## Setup Babel polyfills using core-js
+
+Install `core-js`:
+
+```sh
+yarn add core-js
+```
+
+Edit `.babelrc.js`:
+
+```js
+const presets = [
+  [
+    '@babel/preset-env',
+    {
+      useBuiltIns: 'usage',
+      corejs: '3.16.2', //put the version in package.json here
+    },
+  ],
+]
+```
+
+`preset-env` will use the `browserslist` key in `package.json` to determine what it needs to polyfill, adding in polyfills from `core-js` as needed.

@@ -1,4 +1,12 @@
-const presets = ['@babel/preset-env']
+const presets = [
+	[
+		'@babel/preset-env',
+		{
+			useBuiltIns: 'usage',
+			corejs: '3.16.2',
+		},
+	],
+]
 
 const plugins = ['@babel/plugin-transform-react-jsx']
 
