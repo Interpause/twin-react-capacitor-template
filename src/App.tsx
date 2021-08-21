@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import tw, { css } from 'twin.macro'
 import { SimpleCard } from './Card'
+import { Device, DeviceInfo } from '@capacitor/device'
 
 export default function App() {
+	const [info, setInfo] = useState<DeviceInfo>()
+
+	useEffect(() => {
+		Device.getInfo().then(setInfo)
+	}, [])
 	return (
-		<div tw='relative w-screen h-screen overflow-hidden px-80 py-20 text-center bg-gray-50'>
+		<div tw='relative w-screen h-screen overflow-hidden py-20 text-center bg-gray-50'>
 			<h1 tw='text-6xl text-blue-400'>Hello World!</h1>
 			<h6 tw='text-xl pb-4'>
 				Capacitor app template using React, twin.macro and typescript!
@@ -17,7 +23,8 @@ export default function App() {
 					}
 				`}
 				header='Nice Card'
-				body='made using twin.macro'
+				body={`Running on ${info?.model ?? 'unknown'}`}
+				footer='Made using twin.macro'
 			/>
 		</div>
 	)

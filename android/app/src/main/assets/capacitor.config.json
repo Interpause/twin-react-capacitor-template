@@ -1,0 +1,6 @@
+{
+	"appId": "com.example.app",
+	"appName": "twin-react-capacitor-template",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

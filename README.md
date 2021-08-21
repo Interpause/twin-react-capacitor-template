@@ -421,3 +421,48 @@ export const CardFooter = tw.div`order-3 p-1`
 ## VSCode twin.macro Intellisense Extension (optional)
 
 Gives much needed intellisense for `twin.macro`: <https://marketplace.visualstudio.com/items?itemName=lightyen.tailwindcss-intellisense-twin>
+
+## Package with Capacitor
+
+Install Capacitor first:
+
+```sh
+yarn add @capacitor/core
+yarn add -D @capacitor/cli
+```
+
+Then init Capacitor:
+
+```sh
+yarn cap init # NOTE: specify 'dist' for Web asset directory!
+```
+
+I use Android mainly, so to add it as a platform:
+
+```sh
+yarn add @capacitor/android
+yarn cap add android
+```
+
+Note, you might need to setup Android Studio and add stuff to path beforehand, see: <https://capacitorjs.com/docs/getting-started/environment-setup>.
+
+Finally, add some scripts for testing purposes:
+
+```json
+{
+  // ...
+  "scripts": {
+    // ...
+    "build": "run-s prod && cap sync",
+    "android": "run-s build && cap run android"
+  }
+}
+```
+
+Now if you were to do `yarn android`, you should be able to run the production build of your app on an emulator! Neat.
+
+Capacitor's APIs are modular and have to be individually installed to be used, see: <https://capacitorjs.com/docs/apis>.
+
+## Last Notes
+
+- When customizing the template for your own use, besides changing `package.json`, remember to change `appId` and `appName` in `capacitor.config.ts`.
