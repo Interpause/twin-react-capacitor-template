@@ -1,5 +1,5 @@
 {
-	"editor.formatOnSave": false,
+	"editor.formatOnSave": true,
 	"[javascript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -11,6 +11,9 @@
 	},
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
 	},
 	"typescript.tsdk": "common\\node_modules\\typescript\\lib",
 }
