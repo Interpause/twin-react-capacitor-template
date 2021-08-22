@@ -1,4 +1,10 @@
-// working around @capacitor/storage to make it more React-friendly. I should publish this as gist or smth
+/**
+ * working around @capacitor/storage to make it more React-friendly
+ * feels like a cacheProvider with eager-loading
+ * there isn't any cacheProvider package as far as I can tell unfortunately
+ * probably should publish this as a gist
+ */
+
 import { Storage } from '@capacitor/storage'
 import {
 	createContext,
