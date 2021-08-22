@@ -57,7 +57,7 @@ const config = {
 			title: 'twin-react-capacitor-template',
 		}),
 		isDev && new ReactRefreshWebpackPlugin(),
-		new BundleAnalyzerPlugin(),
+		!isDev && new BundleAnalyzerPlugin(),
 		isDev &&
 			new WebpackPluginServe({
 				host: 'localhost',
