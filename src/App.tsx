@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import tw, { css } from 'twin.macro'
-import { SimpleCard } from './Card'
+import { SimpleCard } from './components/Card'
 import { Device, DeviceInfo } from '@capacitor/device'
-import { useStorage } from './StorageProvider'
+import { useStorage } from './providers/StorageProvider'
 
 export default function App() {
 	const [info, setInfo] = useStorage<DeviceInfo>('cachedInfo')

@@ -4,6 +4,7 @@ const presets = [
 		{
 			useBuiltIns: 'usage',
 			corejs: '3.16.2',
+			modules: false,
 		},
 	],
 ]

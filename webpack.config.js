@@ -5,6 +5,8 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const ReactRefreshTypeScript = require('react-refresh-typescript')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { WebpackPluginServe } = require('webpack-plugin-serve')
+const BundleAnalyzerPlugin =
+	require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const isDev = process.env.NODE_ENV == 'development'
 const outPath = path.resolve(__dirname, 'dist')
@@ -55,6 +57,7 @@ const config = {
 			title: 'twin-react-capacitor-template',
 		}),
 		isDev && new ReactRefreshWebpackPlugin(),
+		new BundleAnalyzerPlugin(),
 		isDev &&
 			new WebpackPluginServe({
 				host: 'localhost',
