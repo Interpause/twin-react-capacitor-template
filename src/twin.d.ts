@@ -8,11 +8,3 @@ declare module 'twin.macro' {
 }
 
 import {} from '@emotion/react/types/css-prop'
-
-declare global {
-	namespace JSX {
-		interface IntrinsicAttributes<T> extends DOMAttributes<T> {
-			as?: keyof HTMLElementTagNameMap
-		}
-	}
-}
