@@ -37,10 +37,16 @@ export function StorageProvider({ children }: { children: ReactNode }) {
 }
 
 /** Use this Hook in order to access objects in storage, defaults to fallback when key not found if provided */
-export function useStorage<T>(key: string): [T | undefined, (v: T) => void]
-export function useStorage<T>(key: string, fallback: T): [T, (v: T) => void]
+export function useStorage<T>(
+	key: string,
+): [T | undefined, (v: T) => void, (v: T) => void]
+export function useStorage<T>(
+	key: string,
+	fallback: T,
+): [T, (v: T) => void, (v: T) => void, (v: T) => void]
 export function useStorage<T>(key: string, fallback?: T) {
 	const { state, setState } = useContext(StorageContext)
+	/** updates state and save to storage */
 	const update = useCallback(
 		(value: T) => {
 			const newState = { ...state, [key]: value }
@@ -50,6 +56,11 @@ export function useStorage<T>(key: string, fallback?: T) {
 		},
 		[setState],
 	)
+	/** save to storage without updating state, useful in some cases */
+	const updateSilent = useCallback((value: T) => {
+		const newState = { ...state, [key]: value }
+		Storage.set({ key: 'storage', value: JSON.stringify(newState) })
+	}, [])
 
-	return [state[key] ?? fallback, update]
+	return [state[key] ?? fallback, update, updateSilent]
 }
