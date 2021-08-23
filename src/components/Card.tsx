@@ -64,7 +64,7 @@ export type SimpleCardProps = CardProps & {
  */
 export function SimpleCard(props: SimpleCardProps) {
 	return (
-		<Card className={props.className} variant={props.variant}>
+		<Card className={props.className} variant={props.variant} as='span'>
 			<CardHeader className='header'>
 				{isValidElement(props.header) ? props.header : <h4>{props.header}</h4>}
 			</CardHeader>

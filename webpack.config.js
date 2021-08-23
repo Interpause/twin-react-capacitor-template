@@ -47,6 +47,13 @@ const config = {
 					},
 				],
 			},
+			// in Typescript, use require('./asset/test.mp3') to get URL or Base64 encoded string
+			// for example, const clickSound = new Audio(require('./asset/click.mp3'))
+			// or, <img src={require('./asset/cat.png')}/>
+			{
+				test: /\.(png|jpg|gif|mp3)$/,
+				type: 'asset',
+			},
 		],
 	},
 	resolve: {
