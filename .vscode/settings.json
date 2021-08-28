@@ -1,5 +1,8 @@
 {
 	"editor.formatOnSave": true,
+	"typescript.tsdk": "common\\node_modules\\typescript\\lib",
+	"files.autoSave": "onWindowChange",
+
 	"[javascript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -13,7 +16,6 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[markdown]": {
-		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+		"editor.formatOnSave": false,
 	},
-	"typescript.tsdk": "common\\node_modules\\typescript\\lib",
 }
