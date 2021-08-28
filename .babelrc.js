@@ -1,13 +1,4 @@
-const presets = [
-	[
-		'@babel/preset-env',
-		{
-			useBuiltIns: 'usage',
-			corejs: '3.16.2',
-			modules: false,
-		},
-	],
-]
+const presets = []
 
 const plugins = [
 	'@emotion/babel-plugin',
@@ -31,6 +22,14 @@ const plugins = [
 
 if (process.env.NODE_ENV === 'production') {
 	plugins.push('transform-remove-console')
+	presets.push([
+		'@babel/preset-env',
+		{
+			useBuiltIns: 'usage',
+			corejs: '3.16.2',
+			modules: false,
+		},
+	])
 }
 
 module.exports = { presets, plugins }
