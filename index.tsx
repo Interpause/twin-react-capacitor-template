@@ -13,6 +13,7 @@ const onInit = async () => {
 	return {}
 }
 
+// async loading of the main app improves bundling somehow
 onInit().then(async (props) => {
 	const App = (await import('./src/App')).default
 	render(

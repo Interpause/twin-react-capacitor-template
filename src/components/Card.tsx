@@ -19,7 +19,7 @@ export const Card = styled.div`
 	width: 50ch;
 
 	${({ variant = 'filled' }: CardProps) =>
-		//javascript doesn't have switches. so i made my own
+		//javascript has switches, i made this cause it feels more concise
 		({
 			outline: tw`bg-opacity-0 border-2`,
 			filled: tw`shadow-md`,
