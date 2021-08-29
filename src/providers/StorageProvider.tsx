@@ -16,12 +16,17 @@ import {
 	ProviderProps,
 } from 'react'
 
+const keyOfKeyList = '__STORAGE_PROVIDER_KEYS_PRESENT_IGNORE_ME__'
+const keyOfStorage = '__STORAGE_PROVIDER_LOAD_ON_INIT_IGNORE_ME__'
+
 /** creates key-value pair in storage, returning Provider that should be wrapped around component & hook to use storage */
 export function createKey<T>(key: string, initial?: T) {
-	const { __LOAD_STORAGE_ON_INIT_IGNORE_ME__: globalStorage } = globalThis as {
-		__LOAD_STORAGE_ON_INIT_IGNORE_ME__?: Record<string, T>
-	}
-	if (globalStorage === undefined)
+	const globalStorage = (globalThis as any)[keyOfStorage] as
+		| Record<string, T>
+		| undefined
+	const globalKeys = (globalThis as any)[keyOfKeyList] as string[] | undefined
+
+	if (globalStorage === undefined || globalKeys === undefined)
 		throw 'initStorage must be called before ReactDOM.render!'
 	const initialValue = globalStorage[key] ?? initial
 
@@ -50,7 +55,12 @@ export function createKey<T>(key: string, initial?: T) {
 		/** save to storage without updating state, useful in some cases */
 		const save = useCallback((newValue: T) => {
 			globalStorage[key] = newValue
-			Storage.set({ key: 'storage', value: JSON.stringify(globalStorage) })
+			if (globalKeys.indexOf(key) === -1) {
+				globalKeys.push(key)
+				Storage.set({ key: keyOfKeyList, value: JSON.stringify(globalKeys) })
+			}
+
+			Storage.set({ key, value: JSON.stringify(newValue) })
 		}, [])
 
 		/** updates state and save to storage */
@@ -67,7 +77,12 @@ export function createKey<T>(key: string, initial?: T) {
 
 /** run this before ReactDOM.render */
 export async function initStorage() {
-	const { value } = await Storage.get({ key: 'storage' })
-	const storage: Record<string, any> = value === null ? {} : JSON.parse(value)
-	;(globalThis as any).__LOAD_STORAGE_ON_INIT_IGNORE_ME__ = storage
+	const storage: Record<string, any> = {}
+	const keys: string[] = JSON.parse(
+		(await Storage.get({ key: keyOfKeyList })).value ?? '[]',
+	)
+	for (const key of keys)
+		storage[key] = JSON.parse((await Storage.get({ key })).value ?? 'null')
+	;(globalThis as any)[keyOfStorage] = storage
+	;(globalThis as any)[keyOfKeyList] = keys
 }
