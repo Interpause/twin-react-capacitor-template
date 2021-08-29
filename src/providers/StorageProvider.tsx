@@ -19,7 +19,27 @@ import {
 const keyOfKeyList = '__STORAGE_PROVIDER_KEYS_PRESENT_IGNORE_ME__'
 const keyOfStorage = '__STORAGE_PROVIDER_LOAD_ON_INIT_IGNORE_ME__'
 
+type KeyContextData<T> = {
+	value?: T
+	setValue: Dispatch<SetStateAction<T | undefined>>
+}
+
+type KeyProviderProps<T> = Omit<ProviderProps<KeyContextData<T>>, 'value'>
+
 /** creates key-value pair in storage, returning Provider that should be wrapped around component & hook to use storage */
+export function createKey<T>(
+	key: string,
+	initial: T,
+): [
+	(props: KeyProviderProps<T>) => JSX.Element,
+	() => [T, (newValue: T) => void, (newValue: T) => void],
+]
+export function createKey<T>(
+	key: string,
+): [
+	(props: KeyProviderProps<T>) => JSX.Element,
+	() => [T | undefined, (newValue: T) => void, (newValue: T) => void],
+]
 export function createKey<T>(key: string, initial?: T) {
 	const globalStorage = (globalThis as any)[keyOfStorage] as
 		| Record<string, T>
@@ -30,12 +50,7 @@ export function createKey<T>(key: string, initial?: T) {
 		throw 'initStorage must be called before ReactDOM.render!'
 	const initialValue = globalStorage[key] ?? initial
 
-	type KeyContextData = {
-		value?: T
-		setValue: Dispatch<SetStateAction<T | undefined>>
-	}
-
-	const KeyContext = createContext<KeyContextData>({
+	const KeyContext = createContext<KeyContextData<T>>({
 		value: initialValue,
 		setValue: () => {
 			throw 'createKey Provider needed!'
@@ -43,7 +58,7 @@ export function createKey<T>(key: string, initial?: T) {
 	})
 
 	/** provider that should be wrapped around component using the storage */
-	const KeyProvider = (props: Omit<ProviderProps<KeyContextData>, 'value'>) => {
+	const KeyProvider = (props: KeyProviderProps<T>) => {
 		const [value, setValue] = useState(initialValue)
 		return <KeyContext.Provider value={{ value, setValue }} {...props} />
 	}
