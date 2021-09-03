@@ -8,3 +8,12 @@ declare module 'twin.macro' {
 }
 
 import {} from '@emotion/react/types/css-prop'
+
+import { ElementType } from 'react'
+declare global {
+	namespace JSX {
+		interface IntrinsicAttributes<T> extends DOMAttributes<T> {
+			as?: ElementType
+		}
+	}
+}
