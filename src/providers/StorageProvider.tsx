@@ -1,10 +1,3 @@
-/**
- * working around @capacitor/storage to make it more React-friendly
- * feels like a cacheProvider with eager-loading
- * there isn't any cacheProvider package as far as I can tell unfortunately
- * probably should publish this as a gist
- */
-
 import { Storage } from '@capacitor/storage'
 import {
 	createContext,
@@ -48,10 +41,10 @@ export function createKey<T>(key: string, initial?: T) {
 
 	if (globalStorage === undefined || globalKeys === undefined)
 		throw 'initStorage must be called before ReactDOM.render!'
-	const initialValue = globalStorage[key] ?? initial
+	const getCachedValue = () => globalStorage[key] ?? initial
 
 	const KeyContext = createContext<KeyContextData<T>>({
-		value: initialValue,
+		value: initial, //if used outside context, returns initialValue used in createKey()
 		setValue: () => {
 			throw 'createKey Provider needed!'
 		},
@@ -59,7 +52,7 @@ export function createKey<T>(key: string, initial?: T) {
 
 	/** provider that should be wrapped around component using the storage */
 	const KeyProvider = (props: KeyProviderProps<T>) => {
-		const [value, setValue] = useState(initialValue)
+		const [value, setValue] = useState(getCachedValue)
 		return <KeyContext.Provider value={{ value, setValue }} {...props} />
 	}
 
