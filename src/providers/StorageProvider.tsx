@@ -12,10 +12,10 @@ import {
 const keyOfKeyList = '__STORAGE_PROVIDER_KEYS_PRESENT_IGNORE_ME__'
 const keyOfStorage = '__STORAGE_PROVIDER_LOAD_ON_INIT_IGNORE_ME__'
 
-type KeyContextData<T> = {
-	value?: T
-	setValue: Dispatch<SetStateAction<T | undefined>>
-}
+type KeyContextData<T> = [
+	T | undefined,
+	Dispatch<SetStateAction<T | undefined>>,
+]
 
 type KeyProviderProps<T> = Omit<ProviderProps<KeyContextData<T>>, 'value'>
 
@@ -43,22 +43,22 @@ export function createKey<T>(key: string, initial?: T) {
 		throw 'initStorage must be called before ReactDOM.render!'
 	const getCachedValue = () => globalStorage[key] ?? initial
 
-	const KeyContext = createContext<KeyContextData<T>>({
-		value: initial, //if used outside context, returns initialValue used in createKey()
-		setValue: () => {
+	const KeyContext = createContext<KeyContextData<T>>([
+		initial, //if used outside context, returns initialValue used in createKey()
+		() => {
 			throw 'createKey Provider needed!'
 		},
-	})
+	])
 
 	/** provider that should be wrapped around component using the storage */
 	const KeyProvider = (props: KeyProviderProps<T>) => {
-		const [value, setValue] = useState(getCachedValue)
-		return <KeyContext.Provider value={{ value, setValue }} {...props} />
+		const hook = useState(getCachedValue)
+		return <KeyContext.Provider value={hook} {...props} />
 	}
 
 	/** hook to use storage */
 	const useKey = () => {
-		const { value, setValue } = useContext(KeyContext)
+		const [value, setValue] = useContext(KeyContext)
 
 		/** save to storage without updating state, useful in some cases */
 		const save = useCallback((newValue: T) => {
@@ -77,10 +77,10 @@ export function createKey<T>(key: string, initial?: T) {
 			save(newValue)
 		}, [])
 
-		return [value, update, save] as [typeof value, typeof update, typeof save]
+		return [value, update, save]
 	}
 
-	return [KeyProvider, useKey] as [typeof KeyProvider, typeof useKey]
+	return [KeyProvider, useKey]
 }
 
 /** run this before ReactDOM.render */
