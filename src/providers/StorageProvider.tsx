@@ -1,3 +1,14 @@
+/**
+ * working around @capacitor/storage to make it more React-friendly
+ * feels like a cacheProvider with eager-loading
+ * there isn't any cacheProvider package as far as I can tell unfortunately
+ * probably should publish this as a gist
+ * TODO: consider making this global
+ * consider allow it to accept some sort of useValue hook
+ * currently it uses useState but above would allow useReducer or useTracked
+ * ^would allow me to cut some code while keeping this store library agnostic
+ */
+
 import { Storage } from '@capacitor/storage'
 import {
 	createContext,
@@ -19,21 +30,36 @@ type KeyContextData<T> = [
 
 type KeyProviderProps<T> = Omit<ProviderProps<KeyContextData<T>>, 'value'>
 
-/** creates key-value pair in storage, returning Provider that should be wrapped around component & hook to use storage */
+/**
+ * creates key-value pair in storage, returning Provider that should be wrapped around component & hook to use storage
+ * @param key string used to identify value in storage
+ * @param initial initial value to use
+ * @param onSave any modifications to make before saving
+ * @param onLoad if using classes, this can be used to revive the class from JSON
+ */
 export function createKey<T>(
 	key: string,
 	initial: T,
+	onSave?: (data: T) => T | undefined,
+	onLoad?: (data: T) => T | undefined,
 ): [
 	(props: KeyProviderProps<T>) => JSX.Element,
 	() => [T, (newValue: T) => void, (newValue: T) => void],
 ]
 export function createKey<T>(
 	key: string,
+	onSave?: (data: T) => T | undefined,
+	onLoad?: (data: T) => T | undefined,
 ): [
 	(props: KeyProviderProps<T>) => JSX.Element,
 	() => [T | undefined, (newValue: T) => void, (newValue: T) => void],
 ]
-export function createKey<T>(key: string, initial?: T) {
+export function createKey<T>(
+	key: string,
+	initial?: T,
+	onSave?: (data: T) => T | undefined,
+	onLoad?: (data: T) => T | undefined,
+) {
 	const globalStorage = (globalThis as any)[keyOfStorage] as
 		| Record<string, T>
 		| undefined
@@ -41,7 +67,11 @@ export function createKey<T>(key: string, initial?: T) {
 
 	if (globalStorage === undefined || globalKeys === undefined)
 		throw 'initStorage must be called before ReactDOM.render!'
-	const getCachedValue = () => globalStorage[key] ?? initial
+	const getCachedValue = () => {
+		const raw = globalStorage[key]
+		if (onLoad && raw !== undefined) return onLoad(raw) ?? raw ?? initial
+		else return raw ?? initial
+	}
 
 	const KeyContext = createContext<KeyContextData<T>>([
 		initial, //if used outside context, returns initialValue used in createKey()
@@ -62,6 +92,7 @@ export function createKey<T>(key: string, initial?: T) {
 
 		/** save to storage without updating state, useful in some cases */
 		const save = useCallback((newValue: T) => {
+			if (onSave) newValue = onSave(newValue) ?? newValue
 			globalStorage[key] = newValue
 			if (globalKeys.indexOf(key) === -1) {
 				globalKeys.push(key)
