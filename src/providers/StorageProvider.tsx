@@ -1,14 +1,3 @@
-/**
- * working around @capacitor/storage to make it more React-friendly
- * feels like a cacheProvider with eager-loading
- * there isn't any cacheProvider package as far as I can tell unfortunately
- * probably should publish this as a gist
- * TODO: consider making this global
- * consider allow it to accept some sort of useValue hook
- * currently it uses useState but above would allow useReducer or useTracked
- * ^would allow me to cut some code while keeping this store library agnostic
- */
-
 import { Storage } from '@capacitor/storage'
 import {
 	createContext,
@@ -69,7 +58,7 @@ export function createKey<T>(
 		throw 'initStorage must be called before ReactDOM.render!'
 	const getCachedValue = () => {
 		const raw = globalStorage[key]
-		if (onLoad && raw !== undefined) return onLoad(raw) ?? raw ?? initial
+		if (onLoad && raw !== undefined) return onLoad(raw) ?? initial
 		else return raw ?? initial
 	}
 
@@ -81,7 +70,7 @@ export function createKey<T>(
 	])
 
 	/** provider that should be wrapped around component using the storage */
-	const KeyProvider = (props: KeyProviderProps<T>) => {
+	function KeyProvider(props: KeyProviderProps<T>) {
 		const hook = useState(getCachedValue)
 		return <KeyContext.Provider value={hook} {...props} />
 	}
